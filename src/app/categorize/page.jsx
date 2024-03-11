@@ -9,16 +9,15 @@ const page = () => {
   const [project, setProject] = useState('');
   const [imageObject, setImageObject] = useState('');
   const [submitData, setSubmitData] = useState('');
-  // falta el manejo de errores
-  const [errors, setErrors] = useState('');
+  const [errors, setErrors] = useState({
+    category: '',
+    element: '',
+    subelement: '',
+    priority: '',
+    comment: '',
+  });
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const query = searchParams.get('project');
-    setProject(query);
-  }, []);
-
-  useEffect(() => {
+  const getImage = () => {
     if (project) {
       fetch(API_BASE_URL + `?type=projectImage&project=${project}`)
         .then((res) => res.json())
@@ -28,10 +27,21 @@ const page = () => {
             ...data,
             priority: '',
             comment: '',
+            project,
           });
         })
         .catch((e) => console.error('Error: ', e));
     }
+  };
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const query = searchParams.get('project');
+    setProject(query);
+  }, []);
+
+  useEffect(() => {
+    getImage();
   }, [project]);
 
   return (
@@ -40,8 +50,18 @@ const page = () => {
       <h2>we are in the cateogrization page</h2>
       <p>The project selected is: {project}</p>
 
-      <ImageForm imageObject={imageObject} submitData={submitData} />
-      <CategoryForm imageObject={imageObject} setSubmitData={setSubmitData} />
+      <ImageForm
+        imageObject={imageObject}
+        submitData={submitData}
+        setErrors={setErrors}
+        getImage={getImage}
+      />
+      <CategoryForm
+        imageObject={imageObject}
+        submitData={submitData}
+        setSubmitData={setSubmitData}
+        errors={errors}
+      />
     </div>
   );
 };
