@@ -4,7 +4,17 @@ import React, { useEffect } from 'react';
 
 const ImageForm = ({ imageObject, submitData, setErrors, getImage }) => {
   const handleDelete = () => {
-    console.log('request to delete photo');
+    const encodedProject = encodeURIComponent(submitData.project);
+    const encodedImage = encodeURIComponent(submitData.image);
+    const url = `${API_BASE_URL}?type=deleteImage&project=${encodedProject}&image=${encodedImage}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        getImage();
+      })
+      .catch((e) => console.error('Error: ', e));
   };
 
   const handleSubmit = () => {

@@ -49,19 +49,20 @@ const page = () => {
       <Link href={'/'}>back</Link>
       <h2>we are in the cateogrization page</h2>
       <p>The project selected is: {project}</p>
-
-      <ImageForm
-        imageObject={imageObject}
-        submitData={submitData}
-        setErrors={setErrors}
-        getImage={getImage}
-      />
-      <CategoryForm
-        imageObject={imageObject}
-        submitData={submitData}
-        setSubmitData={setSubmitData}
-        errors={errors}
-      />
+      <main className="flex flex-col md:flex-row gap-10">
+        <ImageForm
+          imageObject={imageObject}
+          submitData={submitData}
+          setErrors={setErrors}
+          getImage={getImage}
+        />
+        <CategoryForm
+          imageObject={imageObject}
+          submitData={submitData}
+          setSubmitData={setSubmitData}
+          errors={errors}
+        />
+      </main>
     </div>
   );
 };
