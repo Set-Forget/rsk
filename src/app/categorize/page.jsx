@@ -6,7 +6,7 @@ import { API_BASE_URL } from '@/constants/constants';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-const page = () => {
+const Page = () => {
   const [project, setProject] = useState('');
   const [imageObject, setImageObject] = useState('');
   const [submitData, setSubmitData] = useState('');
@@ -89,4 +89,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
