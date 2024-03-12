@@ -67,19 +67,27 @@ const ImageForm = ({ imageObject, submitData, setErrors, getImage }) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center border border-[#CBCBCB] rounded-[12px] w-[550px]">
       <Image
         src={imageObject.image}
         alt="Image to categorize"
         width={200}
         height={300}
       />
-      <button onClick={handleDelete} className="border border-red-600">
-        Delete
-      </button>
-      <button onClick={handleSubmit} className="border border-green-600">
-        Submit
-      </button>
+      <div className="flex w-full items-center justify-between p-2">
+        <button
+          onClick={handleDelete}
+          className="w-[220px] h-[43px] justify-center bg-red-400 rounded-md items-center inline-flex text-zinc-900 text-base font-bold"
+        >
+          Delete
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="w-[220px] h-[43px] justify-center bg-green-400 rounded-md items-center inline-flex text-zinc-900 text-base font-bold"
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

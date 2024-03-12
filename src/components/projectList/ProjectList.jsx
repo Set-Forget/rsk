@@ -15,12 +15,16 @@ const ProjectList = () => {
 
   return (
     <div>
-      <h2>Project Lists</h2>
-      {projects.map((project) => (
-        <Link key={project} href={`/categorize?project=${project[0]}`}>
-          <button className="border border-grey-600">{project}</button>
-        </Link>
-      ))}
+      <h2 className="text-center text-2xl my-10 font-medium">Project List</h2>
+      <div className="flex flex-col items-center justify-center gap-10">
+        {projects.map((project) => (
+          <Link key={project} href={`/categorize?project=${project[0]}`}>
+            <button className="w-[100px] h-[35px] justify-center bg-amber-500 rounded-md items-center inline-flex text-white text-base font-bold">
+              {project}
+            </button>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

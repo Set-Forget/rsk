@@ -96,13 +96,15 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-[418px] justify-between w-[550px]">
       <div className="flex flex-col">
         <select
           name="category"
           onChange={handleCategoryChange}
           value={selectedCategory}
-          className={`${errors.category == '' ? 'border-red-700' : ''}`}
+          className={`${
+            errors.category !== '' ? 'border-red-700' : 'border-stone-300'
+          } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-amber-500`}
         >
           {selectedCategory == '' && (
             <option value="">Select a category</option>
@@ -114,7 +116,9 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
           ))}
         </select>
         {errors.category && (
-          <span className="text-xs text-red-700">errors.category</span>
+          <span className="text-xs text-red-700 mt-1 ml-4">
+            errors.category
+          </span>
         )}
       </div>
 
@@ -124,7 +128,9 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
           onChange={handleElementChange}
           value={selectedElement}
           disabled={!selectedCategory}
-          className={`${errors.element !== '' ? 'border border-red-700 ' : ''}`}
+          className={`${
+            errors.element !== '' ? 'border-red-700 ' : 'border-stone-300'
+          } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-amber-500`}
         >
           {selectedElement == '' && <option value="">Select an element</option>}
           {selectedCategory &&
@@ -135,7 +141,9 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
             ))}
         </select>
         {errors.element && (
-          <span className="text-xs text-red-700">{errors.element}</span>
+          <span className="text-xs text-red-700 mt-1 ml-4">
+            {errors.element}
+          </span>
         )}
       </div>
 
@@ -146,8 +154,8 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
           value={selectedSubelement}
           disabled={!selectedElement}
           className={`${
-            errors.subelement !== '' ? 'border border-red-700 ' : ''
-          }`}
+            errors.subelement !== '' ? 'border-red-700 ' : 'border-stone-300'
+          } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-amber-500`}
         >
           {selectedSubelement == '' && (
             <option value="">Select a subelement</option>
@@ -162,7 +170,9 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
             )}
         </select>
         {errors.subelement && (
-          <span className="text-xs text-red-700">{errors.subelement}</span>
+          <span className="text-xs text-red-700 mt-1 ml-4">
+            {errors.subelement}
+          </span>
         )}
       </div>
 
@@ -171,6 +181,7 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
         onChange={handleDescriptionChange}
         value={selectedDescription}
         disabled={!selectedSubelement}
+        className="px-3 py-2.5 bg-transparent rounded-[12px] border border-stone-300 justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-amber-500"
       >
         {selectedDescription == '' && (
           <option value="">Select a description</option>
@@ -197,8 +208,8 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
           onChange={handleChange}
           value={submitData.priority}
           className={`${
-            errors.priority !== '' ? 'border border-red-700 ' : ''
-          }`}
+            errors.priority !== '' ? 'border-red-700 ' : 'border-stone-300'
+          } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-amber-500`}
         >
           <option value="">Select a priority</option>
           <option value="P1">P1</option>
@@ -207,7 +218,9 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
           <option value="P4">P4</option>
         </select>
         {errors.priority && (
-          <span className="text-xs text-red-700">{errors.priority}</span>
+          <span className="text-xs text-red-700 mt-1 ml-4">
+            {errors.priority}
+          </span>
         )}
       </div>
 
@@ -215,15 +228,18 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
         <textarea
           name="comment"
           id="comment"
-          cols="30"
-          rows="10"
+          rows="3"
           value={submitData.comment}
           placeholder="Comment"
           onChange={handleChange}
-          className={`${errors.comment !== '' ? 'border border-red-700 ' : ''}`}
+          className={`resize-none  ${
+            errors.comment !== '' ? 'border-red-700 ' : 'border-stone-300'
+          } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold`}
         ></textarea>
         {errors.comment && (
-          <span className="text-xs text-red-700">{errors.comment}</span>
+          <span className="text-xs text-red-700 mt-1 ml-4">
+            {errors.comment}
+          </span>
         )}
       </div>
     </div>
