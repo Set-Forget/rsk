@@ -2,8 +2,10 @@
 import Spinner from '@/components/Spinner/Spinner';
 import CategoryForm from '@/components/categoryForm/CategoryForm';
 import ImageForm from '@/components/imageForm/ImageForm';
+import Navbar from '@/components/navbar/Navbar';
 import { API_BASE_URL } from '@/constants/constants';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const Page = () => {
@@ -14,10 +16,13 @@ const Page = () => {
     category: '',
     element: '',
     subelement: '',
+    unitMeasure: '',
+    unitCost: '',
     priority: '',
     comment: '',
   });
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const getImage = () => {
     if (project) {
@@ -42,9 +47,14 @@ const Page = () => {
   };
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
     const searchParams = new URLSearchParams(window.location.search);
     const query = searchParams.get('project');
-    setProject(query);
+    if (query && user.assignedProjects.includes(query)) {
+      setProject(query);
+    } else {
+      router.push('/')
+    }
   }, []);
 
   useEffect(() => {
@@ -53,10 +63,11 @@ const Page = () => {
 
   return (
     <div className="bg-[#FAFAFA] h-screen">
+      <Navbar />
       <div className="w-full flex items-center p-10">
         <Link
           href={'/'}
-          className="w-[100px] h-[35px] justify-center bg-amber-500 rounded-md items-center inline-flex text-white text-base font-bold"
+          className="w-[100px] h-[35px] justify-center bg-primary rounded-md items-center inline-flex text-white text-base font-semibold"
         >
           Back
         </Link>
@@ -70,7 +81,7 @@ const Page = () => {
           <h4 className="text-base mt-4">Loading Image . . .</h4>
         </div>
       ) : (
-        <main className="flex flex-col md:flex-row gap-10 items-center justify-center p-10">
+        <main className="flex flex-col lg:flex-row gap-10 items-center justify-center p-10 bg-[#FAFAFA]">
           <ImageForm
             imageObject={imageObject}
             submitData={submitData}

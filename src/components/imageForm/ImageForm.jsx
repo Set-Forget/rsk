@@ -22,6 +22,8 @@ const ImageForm = ({ imageObject, submitData, setErrors, getImage }) => {
       category: '',
       element: '',
       subelement: '',
+      unitMeasure: '',
+      unitCost: '',
       priority: '',
       comment: '',
     };
@@ -34,6 +36,12 @@ const ImageForm = ({ imageObject, submitData, setErrors, getImage }) => {
     }
     if (submitData.subelement === '') {
       newErrors.subelement = 'Please select a Subelement';
+    }
+    if (submitData.unitMeasure === '') {
+      newErrors.unitMeasure = 'Please select a Unit of Measure';
+    }
+    if (submitData.unitCost === '') {
+      newErrors.unitCost = 'Please introduce a Unit Cost';
     }
     if (submitData.priority === '') {
       newErrors.priority = 'Please select a Priority';

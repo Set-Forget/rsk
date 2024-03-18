@@ -1,5 +1,5 @@
 'use client';
-import { API_BASE_URL } from '@/constants/constants';
+import { API_BASE_URL, ROLES } from '@/constants/constants';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import Spinner from '../Spinner/Spinner';
@@ -7,14 +7,26 @@ import Spinner from '../Spinner/Spinner';
 const ProjectList = () => {
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    setUser(userData);
+
     setIsLoading(true);
     fetch(API_BASE_URL + '?type=projectsList')
       .then((res) => res.json())
       .then((data) => {
-        setProjects(data);
-        setIsLoading(false);
+        if (userData && userData.role === ROLES.user) {
+          const filteredProjects = data.filter((project) =>
+            userData.assignedProjects.includes(project[0])
+          );
+          setProjects(filteredProjects);
+          setIsLoading(false);
+        } else {
+          setProjects(data);
+          setIsLoading(false);
+        }
       })
       .catch((e) => {
         console.error('Error:', e);
@@ -34,7 +46,7 @@ const ProjectList = () => {
         )}
         {projects.map((project) => (
           <Link key={project} href={`/categorize?project=${project[0]}`}>
-            <button className="w-[100px] h-[35px] justify-center bg-amber-500 rounded-md items-center inline-flex text-white text-base font-bold">
+            <button className="w-[100px] h-[40px] justify-center bg-primary rounded-md items-center inline-flex text-white text-base font-semibold">
               {project}
             </button>
           </Link>
