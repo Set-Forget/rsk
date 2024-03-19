@@ -17,9 +17,9 @@ const Page = () => {
         />
       </div>
 
-      <div className="flex items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-bold mb-5 text-center">Welcome Back!</h2>
         <div className="rounded-xl shadow-xl p-6">
-          <h2 className="text-2xl font-bold mb-5 text-center">Welcome Back!</h2>
           <LoginForm />
         </div>
       </div>

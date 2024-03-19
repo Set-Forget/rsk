@@ -1,14 +1,25 @@
 import { API_BASE_URL } from '@/constants/constants';
 import React, { useEffect, useState } from 'react';
 
-const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
+const CategoryForm = ({
+  imageObject,
+  submitData,
+  setSubmitData,
+  errors,
+  selectedCategory,
+  setSelectedCategory,
+  selectedElement,
+  setSelectedElement,
+  selectedSubelement,
+  setSelectedSubelement,
+  selectedDescription,
+  setSelectedDescription,
+  selectedUnitOfMeasure,
+  setSelectedUnitOfMeasure,
+  selectedUnitCost,
+  setSelectedUnitCost,
+}) => {
   const [categories, setCategories] = useState({});
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedElement, setSelectedElement] = useState('');
-  const [selectedSubelement, setSelectedSubelement] = useState('');
-  const [selectedDescription, setSelectedDescription] = useState('');
-  const [selectedUnitOfMeasure, setSelectedUnitOfMeasure] = useState('');
-  const [selectedUnitCost, setSelectedUnitCost] = useState('');
   const [descriptions, setDescriptions] = useState([]);
   const [isLoadingDescriptions, setIsLoadingDescriptions] = useState(false);
 
@@ -259,9 +270,10 @@ const CategoryForm = ({ imageObject, submitData, setSubmitData, errors }) => {
         <input
           name="unitCost"
           id="unitCost"
-          type='number'
+          type="number"
           onChange={handleUnitCostSelected}
           value={selectedUnitCost}
+          placeholder="Introduce a Unit Cost"
           className={`${
             errors.unitCost !== '' ? 'border-red-700 ' : 'border-stone-300'
           } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-primary focus:outline-primary`}

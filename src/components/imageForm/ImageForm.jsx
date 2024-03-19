@@ -1,9 +1,24 @@
 import { API_BASE_URL } from '@/constants/constants';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
+import Spinner from '../Spinner/Spinner';
 
-const ImageForm = ({ imageObject, submitData, setErrors, getImage }) => {
+const ImageForm = ({
+  imageObject,
+  submitData,
+  setErrors,
+  getImage,
+  setSelectedCategory,
+  setSelectedElement,
+  setSelectedSubelement,
+  setSelectedDescription,
+  setSelectedUnitOfMeasure,
+  setSelectedUnitCost,
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleDelete = () => {
+    setIsLoading(true);
     const encodedProject = encodeURIComponent(submitData.project);
     const encodedImage = encodeURIComponent(submitData.image);
     const url = `${API_BASE_URL}?type=deleteImage&project=${encodedProject}&image=${encodedImage}`;
@@ -11,10 +26,19 @@ const ImageForm = ({ imageObject, submitData, setErrors, getImage }) => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        setSelectedCategory('');
+        setSelectedElement('');
+        setSelectedSubelement('');
+        setSelectedDescription('');
+        setSelectedUnitOfMeasure('');
+        setSelectedUnitCost('');
+        setIsLoading(false);
         getImage();
       })
-      .catch((e) => console.error('Error: ', e));
+      .catch((e) => {
+        setIsLoading(false);
+        console.error('Error: ', e);
+      });
   };
 
   const handleSubmit = () => {
@@ -55,6 +79,7 @@ const ImageForm = ({ imageObject, submitData, setErrors, getImage }) => {
     const hasErrors = Object.values(newErrors).some((error) => error !== '');
 
     if (!hasErrors) {
+      setIsLoading(true);
       fetch(API_BASE_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -67,28 +92,37 @@ const ImageForm = ({ imageObject, submitData, setErrors, getImage }) => {
         }),
       })
         .then(() => {
-          console.log('Request sent successfully');
+          setIsLoading(false);
           getImage();
         })
-        .catch((e) => console.error('Error: ', e));
+        .catch((e) => {
+          setIsLoading(false);
+          console.error('Error: ', e);
+        });
     }
   };
 
   return (
-    <div className="flex flex-col justify-center items-center border border-[#CBCBCB] rounded-[12px] w-[550px]">
-      <Image
-        src={imageObject.image}
-        alt="Image to categorize"
-        width={200}
-        height={300}
-      />
-      <div className="flex w-full items-center justify-between p-2">
+    <div className="flex flex-col justify-center items-center border border-[#CBCBCB] rounded-[12px] w-[550px] h-[500px]">
+      <div className="relative w-[550px] h-[450px]">
+        <Image
+          src={imageObject.image}
+          alt="Image to categorize"
+          layout="fill"
+          objectFit="contain"
+          objectPosition="center"
+        />
+      </div>
+      <div className="flex w-full min-w-[550px] items-center justify-between p-2">
         <button
           onClick={handleDelete}
           className="w-[220px] h-[43px] justify-center bg-red-400 rounded-md items-center inline-flex text-zinc-900 text-base font-bold"
         >
           Delete
         </button>
+
+        {isLoading && <Spinner />}
+
         <button
           onClick={handleSubmit}
           className="w-[220px] h-[43px] justify-center bg-green-400 rounded-md items-center inline-flex text-zinc-900 text-base font-bold"

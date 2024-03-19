@@ -2,6 +2,7 @@
 import { API_BASE_URL } from '@/constants/constants';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import Spinner from '../Spinner/Spinner';
 
 const setCookie = (name, value, days) => {
   const expires = new Date(Date.now() + days * 864e5).toUTCString();
@@ -15,6 +16,7 @@ const setCookie = (name, value, days) => {
 };
 
 const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [submitData, setSubmitData] = useState({
     email: '',
     password: '',
@@ -25,6 +27,8 @@ const LoginForm = () => {
     password: '',
   });
 
+  const [invalidCredentials, setInvalidCredentials] = useState('');
+
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -34,6 +38,7 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setInvalidCredentials('');
     let newErrors = {
       email: '',
       password: '',
@@ -50,6 +55,7 @@ const LoginForm = () => {
     setErrors(newErrors);
 
     if (!newErrors.email && !newErrors.password) {
+      setIsLoading(true);
       submitData.type = 'login';
       fetch(API_BASE_URL, {
         redirect: 'follow',
@@ -61,16 +67,21 @@ const LoginForm = () => {
       })
         .then((res) => res.json())
         .then((data) => {
+          setIsLoading(false);
           if (data.status === 'success') {
             //   Store user credentials in a cookie
             setCookie('user', JSON.stringify(data.data.id), 7); // Expires in 7 days
             localStorage.setItem('user', JSON.stringify(data.data)); // local storage
             router.push('/');
           } else {
-            console.error('Login failed');
+            setInvalidCredentials(data.message);
+            console.error(data);
           }
         })
-        .catch((e) => console.error(e));
+        .catch((e) => {
+          setIsLoading(false);
+          console.error(e);
+        });
     }
   };
 
@@ -123,12 +134,22 @@ const LoginForm = () => {
           </span>
         )}
       </div>
-      <button
-        type="submit"
-        className="text-white bg-primary hover:bg-hover-blue focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
-      >
-        Sign In
-      </button>
+
+      <div className="flex items-center gap-4">
+        <button
+          type="submit"
+          className="text-white bg-primary hover:bg-hover-blue focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+        >
+          Sign In
+        </button>
+        {isLoading && <Spinner />}
+      </div>
+
+      {invalidCredentials && (
+        <h4 className="text-xs text-center text-red-600 mt-4">
+          {invalidCredentials}
+        </h4>
+      )}
     </form>
   );
 };

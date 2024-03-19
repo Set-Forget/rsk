@@ -1,10 +1,17 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Navbar = () => {
   const router = useRouter();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const logout = () => {
     // Clear the user cookie
@@ -16,10 +23,16 @@ const Navbar = () => {
   return (
     <nav className="fixed md:relative bottom-0 left-0 z-20 w-full bg-primary border-gray-200 shadow flex items-center justify-between p-2 md:py-3 md:px-6 ">
       <div className="flex flex-col items-start">
-        <span className="text-xs text-[#BAB8B8] sm:text-center ">Welcome,</span>
-        <span className="text-sm text-white sm:text-center mt-1">
-          {user.name + ' ' + user.lastname}
-        </span>
+        {user && (
+          <>
+            <span className="text-xs text-[#BAB8B8] sm:text-center ">
+              Welcome,
+            </span>
+            <span className="text-sm text-white sm:text-center mt-1">
+              {user?.name + ' ' + user?.lastname}
+            </span>
+          </>
+        )}
       </div>
       <div className="flex flex-wrap items-center text-sm font-medium text-white hover:cursor-pointer hover:text-[#BAB8B8]">
         <button onClick={logout} className=" flex items-center">

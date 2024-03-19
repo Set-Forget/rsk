@@ -16,6 +16,18 @@ module.exports = {
         'primary': '#2A3F54',
         'hover-blue': '#1F2E40',
       },
+      keyframes: {
+        rotate180: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(180deg)' },
+        },
+      },
+      animation: {
+        'rotate-180': 'rotate180 0.5s ease-in-out forwards',
+      },
+      transitionProperty: {
+        'rotate': 'transform',
+      },
     },
   },
   plugins: [],
