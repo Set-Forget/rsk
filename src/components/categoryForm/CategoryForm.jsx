@@ -23,10 +23,17 @@ const CategoryForm = ({
   const [descriptions, setDescriptions] = useState([]);
   const [isLoadingDescriptions, setIsLoadingDescriptions] = useState(false);
 
+  const [showTempCategory, setShowTempCategory] = useState(true);
+
   useEffect(() => {
     fetch(API_BASE_URL + '?type=getAllCategories')
       .then((res) => res.json())
-      .then((data) => setCategories(data))
+      .then((data) => {
+        setCategories(data);
+        setTimeout(() => {
+          setShowTempCategory(false);
+        }, 1000);
+      })
       .catch((e) => console.error('Error: ', e));
   }, []);
 
@@ -59,63 +66,70 @@ const CategoryForm = ({
   }, [selectedSubelement]);
 
   const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
+    const newCategory = e.target.value;
+    setSelectedCategory(newCategory);
+    setSelectedElement('');
+    setSelectedSubelement('');
+    setSelectedDescription('');
     setSubmitData({
       ...submitData,
-      category: e.target.value,
+      category: newCategory,
       element: '',
       subelement: '',
       description: '',
     });
-    setSelectedElement('');
-    setSelectedSubelement('');
-    setSelectedDescription('');
+    console.log('updated category');
   };
 
   const handleElementChange = (e) => {
-    setSelectedElement(e.target.value);
-    setSubmitData({
-      ...submitData,
-      element: e.target.value,
-      subelement: '',
-      description: '',
-    });
+    const newElement = e.target.value;
+    setSelectedElement(newElement);
     setSelectedSubelement('');
     setSelectedDescription('');
+    setSubmitData((prevSubmitData) => ({
+      ...prevSubmitData,
+      element: newElement,
+      subelement: '',
+      description: '',
+    }));
   };
 
   const handleSubelementChange = (e) => {
-    setSelectedSubelement(e.target.value);
-    setSubmitData({
-      ...submitData,
-      subelement: e.target.value,
-      description: '',
-    });
+    const newSubelement = e.target.value;
+    setSelectedSubelement(newSubelement);
     setSelectedDescription('');
+    setSubmitData((prevSubmitData) => ({
+      ...prevSubmitData,
+      subelement: newSubelement,
+      description: '',
+    }));
   };
 
   const handleDescriptionChange = (e) => {
-    setSelectedDescription(e.target.value);
-    setSubmitData({
-      ...submitData,
-      description: e.target.value,
-    });
+    const newDescription = e.target.value;
+    setSelectedDescription(newDescription);
+    setSubmitData((prevSubmitData) => ({
+      ...prevSubmitData,
+      description: newDescription,
+    }));
   };
 
   const handleUnitMeasureChange = (e) => {
-    setSelectedUnitOfMeasure(e.target.value);
-    setSubmitData({
-      ...submitData,
-      unitMeasure: e.target.value,
-    });
+    const newUnitMeasure = e.target.value;
+    setSelectedUnitOfMeasure(newUnitMeasure);
+    setSubmitData((prevSubmitData) => ({
+      ...prevSubmitData,
+      unitMeasure: newUnitMeasure,
+    }));
   };
 
   const handleUnitCostSelected = (e) => {
-    setSelectedUnitCost(e.target.value);
-    setSubmitData({
-      ...submitData,
-      unitCost: e.target.value,
-    });
+    const newUnitCost = e.target.value;
+    setSelectedUnitCost(newUnitCost);
+    setSubmitData((prevSubmitData) => ({
+      ...prevSubmitData,
+      unitCost: newUnitCost,
+    }));
   };
 
   const handleChange = (e) => {
@@ -137,6 +151,9 @@ const CategoryForm = ({
             errors.category !== '' ? 'border-red-700' : 'border-stone-300'
           } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-primary focus:outline-primary`}
         >
+          {selectedCategory == imageObject.category && showTempCategory && (
+            <option value="">{imageObject.category}</option>
+          )}
           {selectedCategory == '' && (
             <option value="">Select a category</option>
           )}
@@ -163,6 +180,9 @@ const CategoryForm = ({
             errors.element !== '' ? 'border-red-700 ' : 'border-stone-300'
           } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-primary focus:outline-primary`}
         >
+          {selectedElement == imageObject.element && showTempCategory && (
+            <option value="">{imageObject.element}</option>
+          )}
           {selectedElement == '' && <option value="">Select an element</option>}
           {selectedCategory &&
             Object.keys(categories[selectedCategory] || {}).map((element) => (
@@ -188,6 +208,9 @@ const CategoryForm = ({
             errors.subelement !== '' ? 'border-red-700 ' : 'border-stone-300'
           } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-primary focus:outline-primary`}
         >
+          {selectedSubelement == imageObject.subelement && showTempCategory && (
+            <option value="">{imageObject.subelement}</option>
+          )}
           {selectedSubelement == '' && (
             <option value="">Select a subelement</option>
           )}
@@ -276,7 +299,7 @@ const CategoryForm = ({
           placeholder="Introduce a Unit Cost"
           className={`${
             errors.unitCost !== '' ? 'border-red-700 ' : 'border-stone-300'
-          } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold hover:text-white hover:bg-primary focus:outline-primary`}
+          } px-3 py-2.5 bg-transparent rounded-[12px] border justify-between items-center inline-flex text-neutral-500 text-base font-semibold focus:outline-primary`}
         />
 
         {errors.unitCost && (

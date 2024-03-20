@@ -92,6 +92,12 @@ const ImageForm = ({
         }),
       })
         .then(() => {
+          setSelectedCategory('');
+          setSelectedElement('');
+          setSelectedSubelement('');
+          setSelectedDescription('');
+          setSelectedUnitOfMeasure('');
+          setSelectedUnitCost('');
           setIsLoading(false);
           getImage();
         })
@@ -116,7 +122,7 @@ const ImageForm = ({
       <div className="flex w-full min-w-[550px] items-center justify-between p-2">
         <button
           onClick={handleDelete}
-          className="w-[220px] h-[43px] justify-center bg-red-400 rounded-md items-center inline-flex text-zinc-900 text-base font-bold"
+          className="text-white bg-[#a94442] w-[220px] h-[43px] justify-center rounded-md items-center inline-flex text-base font-bold hover:bg-[#7b3230]"
         >
           Delete
         </button>
@@ -125,7 +131,7 @@ const ImageForm = ({
 
         <button
           onClick={handleSubmit}
-          className="w-[220px] h-[43px] justify-center bg-green-400 rounded-md items-center inline-flex text-zinc-900 text-base font-bold"
+          className="text-white bg-[#3c763d] w-[220px] h-[43px] justify-center rounded-md items-center inline-flex text-base font-bold hover:bg-[#2a5530]"
         >
           Submit
         </button>
